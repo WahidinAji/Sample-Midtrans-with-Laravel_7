@@ -16,3 +16,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('payment', 'PaymentController@index');
+Route::get('payment/finish', 'PaymentController');
+Route::get('payment/unfinish', 'PaymentController');
+Route::get('payment/error', 'PaymentController');
+// Route::resource('payment/','PaymentWebhookController');
+Route::get('payment/notification', 'PaymentWebhookController');
