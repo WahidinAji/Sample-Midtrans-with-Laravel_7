@@ -44,8 +44,8 @@ class PaymentController extends Controller
     }
     public function finish($id)
     {
-        $paymentCustomer = Payment::find($id)
-        
+        $paymentCustomer = Payment::find($id);
+
         return \view('finish');
     }
 
