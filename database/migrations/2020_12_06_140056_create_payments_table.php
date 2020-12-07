@@ -16,9 +16,8 @@ class CreatePaymentsTable extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->string('order_id');
-            $table->string('gross_ammount');
+            $table->string('gross_amount');
             $table->string('item_id')->nullable();
-            $table->string('item_price')->nullable();
             $table->string('item_name')->nullable();
             $table->string('customer_name')->nullable();
             $table->string('customer_email')->nullable();
