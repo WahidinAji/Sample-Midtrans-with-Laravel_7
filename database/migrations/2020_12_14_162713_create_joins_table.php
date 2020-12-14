@@ -28,7 +28,9 @@ class CreateJoinsTable extends Migration
             $table->text('cancellation_note')->nullable(); //payment dibatalkan kenpa?
             $table->string('code_order_id'); //   "order_id": "Postman-1578568851",
             $table->string('gross_amount'); //   "gross_amount": "10000.00",
-            $table->string('payment_type'); //   "payment_type": "credit_card",
+            $table->string('payment_type')->nullable(); //   "payment_type": "credit_card",
+            $table->string('payment_duration')->nullable();
+            $table->string('payment_note')->nullable(); //for transaction status
             $table->timestamps();
         });
     }
