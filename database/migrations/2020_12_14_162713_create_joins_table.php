@@ -21,7 +21,7 @@ class CreateJoinsTable extends Migration
             $table->datetime('join_date')->nullable();
             $table->datetime('payment_due')->nullable();
             $table->string('phone')->nullable();
-            $table->unsignedBigInteger('aprroved_by')->nullable();
+            $table->unsignedBigInteger('approved_by')->nullable();
             $table->datetime('approved_at')->nullable();
             $table->unsignedBigInteger('cancelled_by')->nullable();
             $table->datetime('cancelled_at')->nullable(); //payment dibatalkan kapan?
