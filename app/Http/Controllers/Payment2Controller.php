@@ -19,11 +19,13 @@ class Payment2Controller extends Controller
     {
         $payload = $request->getContent();
         $notification = \json_decode($payload);
-        $validSignatureKey = hash("sha512", $notification->order_id . $notification->status_code . $notification->gross_amount . env('MIDTRANS_SERVER_KEY'));
+        $validSignatureKey = hash("sha512", $notification->order_id . $notification->status_code . $notification->gross_amount . env('MIDTRANS_SERVERKEY'));
         // \dd($validSignatureKey, $notification->signature_key);
         if ($notification->signature_key != $validSignatureKey) {
             return response(['message' => 'Invalid signature'], 403);
         }
+        // return \response(['message' => 'valid signature'], 200);
+
         // \dd($validSignatureKey);
         // $pay = Payment2::create([
         //     'order_id' => $notification->order_id,
@@ -50,7 +52,7 @@ class Payment2Controller extends Controller
         $order_id = $notif->order_id;
         $fraud = $notif->fraud_status;
         $order = Order::where('order_code', $order_id)->first();
-        $paymentStatus = null;
+        // $paymentStatus = null;
         if ($transaction == 'capture') {
             // For credit card transaction, we need to check whether transaction is challenge by FDS or not
             if ($type == 'credit_card') {
@@ -59,51 +61,51 @@ class Payment2Controller extends Controller
                     // TODO merchant should decide whether this transaction is authorized or not in MAP
                     // echo "Transaction order_id: " . $order_id . " is challenged by FDS";
                     // $paymentStatus= "Transaction order_id: " . $order_id . " is challenged by FDS";
-                    $order->payment_status = 'challenge';
+                    $transaction = Payment2::CHALLENGE;
+                    $order->payment_status = Order::UNPAID;
                     $order->save();
-                    // $paymentStatus = Payment2::CHALLENGE;
                 } else {
                     // TODO set payment status in merchant's database to 'Success'
                     // echo "Transaction order_id: " . $order_id . " successfully captured using " . $type;
-                    // $paymentStatus = Payment2::SUCCESS;
-                    $order->payment_status = 'success';
+                    $transaction = Payment2::SUCCESS;
+                    $order->payment_status = Order::PAID;
                     $order->save();
                 }
             }
         } else if ($transaction == 'settlement') {
             // TODO set payment status in merchant's database to 'Settlement'
             // echo "Transaction order_id: " . $order_id . " successfully transfered using " . $type;
-            // $paymentStatus = Payment2::SETTLEMENT;
-            $order->payment_status = 'settlement';
+            $transaction = Payment2::SETTLEMENT;
+            $order->payment_status = Order::PAID;
             $order->save();
         } else if ($transaction == 'pending') {
             // TODO set payment status in merchant's database to 'Pending'
             // echo "Waiting customer to finish transaction order_id: " . $order_id . " using " . $type;
-            // $paymentStatus = Payment2::PENDING;
-            $order->payment_status = 'pending';
+            $transaction = Payment2::PENDING;
+            $order->payment_status = Order::UNPAID;
             $order->save();
         } else if ($transaction == 'deny') {
             // TODO set payment status in merchant's database to 'Denied'
             // echo "Payment using " . $type . " for transaction order_id: " . $order_id . " is denied.";
-            // $paymentStatus = Payment2::DENY;
-            $order->payment_status = 'deny';
+            $transaction = Payment2::DENY;
+            $order->payment_status = Order::UNPAID;
             $order->save();
         } else if ($transaction == 'expire') {
             // TODO set payment status in merchant's database to 'expire'
             // echo "Payment using " . $type . " for transaction order_id: " . $order_id . " is expired.";
-            // $paymentStatus = Payment2::EXPIRE;
-            $order->payment_status = 'expire';
+            $transaction = Payment2::EXPIRE;
+            $order->payment_status = Order::UNPAID;
             $order->save();
         } else if ($transaction == 'cancel') {
             // TODO set payment status in merchant's database to 'Denied'
-            // $paymentStatus = Payment2::CANCEL;
-            $order->payment_status = 'cancel';
+            $transaction = Payment2::CANCEL;
+            $order->payment_status = Order::UNPAID;
             $order->save();
         }
         Payment2::create([
             'order_id' => $order->id,
             'gross_amount' => $notif->gross_amount,
-            'transaction_status' => $paymentStatus,
+            'transaction_status' => $transaction,
             'transaction_id' => $notif->transaction_id,
             'status_code' => $notif->status_code,
             'status_message' => $notif->status_message,
@@ -121,7 +123,7 @@ class Payment2Controller extends Controller
         //         }
         //     );
         // }
-        $message = 'Payment status is : ' . $paymentStatus;
+        $message = 'Payment status is : ' . $transaction;
         $response = [
             'code' => 200,
             'message' => $message,

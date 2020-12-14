@@ -13,7 +13,7 @@ class OrderTableSeeder extends Seeder
     public function run()
     {
         DB::table('orders')->insert([
-            'order_code' => 'azsxdcfv',
+            'order_code' => 'aqswderfgt',
             'price' => 10000,
             'customer_name' => 'customer 1',
             'customer_email' => 'email@gmail.com',
@@ -22,7 +22,7 @@ class OrderTableSeeder extends Seeder
             'updated_at' => now(),
         ]);
         DB::table('orders')->insert([
-            'order_code' => 'qawsedrf',
+            'order_code' => 'plokijuhyg',
             'price' => 10000,
             'customer_name' => 'customer 1',
             'customer_email' => 'gmail@gmail.com',
