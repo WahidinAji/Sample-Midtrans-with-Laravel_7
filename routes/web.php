@@ -26,3 +26,9 @@ Route::get('payment/finish', 'PaymentController@finish');
 // Route::get('payment/error', 'PaymentController');
 // // Route::resource('payment/','PaymentWebhookController');
 // Route::get('payment/notification', 'PaymentWebhookController');
+
+Route::get('/', 'OrderController@index');
+Route::post('notification', 'Payment2Controller@notification');
+Route::get('finish', 'Payment2Controller@finish');
+Route::get('unfinish', 'Payment2Controller@unfinish');
+Route::get('error', 'Payment2Controller@unfinish');
