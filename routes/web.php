@@ -27,8 +27,14 @@ Route::get('payment/finish', 'PaymentController@finish');
 // // Route::resource('payment/','PaymentWebhookController');
 // Route::get('payment/notification', 'PaymentWebhookController');
 
-Route::get('/', 'OrderController@index');
-Route::post('notification', 'Payment2Controller@notification');
-Route::get('finish', 'Payment2Controller@finish');
-Route::get('unfinish', 'Payment2Controller@unfinish');
-Route::get('error', 'Payment2Controller@unfinish');
+//dibawah ini yang bisa
+// Route::get('/', 'OrderController@index');
+// Route::post('notification', 'Payment2Controller@notification');
+// Route::get('finish', 'Payment2Controller@finish');
+// Route::get('unfinish', 'Payment2Controller@unfinish');
+// Route::get('error', 'Payment2Controller@unfinish');
+
+//contoh sesuai dengan studi case yang sedang dialami
+Route::group(['namespace' => 'Payment'], function () {
+    Route::get('/', 'JoinController@index');
+});

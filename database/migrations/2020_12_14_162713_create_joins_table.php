@@ -31,6 +31,8 @@ class CreateJoinsTable extends Migration
             $table->string('payment_type')->nullable(); //   "payment_type": "credit_card",
             $table->string('payment_duration')->nullable();
             $table->string('payment_note')->nullable(); //for transaction status
+            $table->string('_token')->nullable();
+            $table->string('redirect_url')->nullable();
             $table->timestamps();
         });
     }
