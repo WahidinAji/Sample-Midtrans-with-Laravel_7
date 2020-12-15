@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Payment;
 use App\Http\Controllers\Controller;
 use App\Model\Join;
 use App\Model\Payment2;
+use App\Model\PaymentMidtrans;
 use Exception;
 use Illuminate\Http\Request;
 use Midtrans\Snap;
@@ -14,7 +15,7 @@ class JoinController extends Controller
     public function JoinTournament()
     {
         // \dd('ini siapa');
-        $join = Join::find(2);
+        $join = Join::find(3);
         $this->initPaymentGateway();
         $customerDetails = [
             'first_name'    => $join->approved_by,
@@ -24,7 +25,7 @@ class JoinController extends Controller
         ];
 
         $params = [
-            'enable_payments' => Payment2::PAYMENT_CHANNELS,
+            'enable_payments' => PaymentMidtrans::PAYMENT_CHANNELS,
             'transaction_details' => [
                 'order_id' => $join->code_order_id,
                 'gross_amount' => $join->gross_amount,
@@ -43,10 +44,10 @@ class JoinController extends Controller
             $join->save();
             return \redirect($response_midtrans->redirect_url);
         } catch (Exception $e) {
-            echo $e->getMessage();
+            // echo $e->getMessage();
 
-            // $message = $e->getMessage();
-            // return \redirect()->back()->with($message);
+            $message = $e->getMessage();
+            return \redirect()->back()->with($message);
         }
     }
 }

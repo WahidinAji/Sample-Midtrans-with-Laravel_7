@@ -14,11 +14,13 @@ class PaymentMidtransController extends Controller
     {
         $payload = $request->getContent();
         $notification = \json_decode($payload);
+        // \dd($notification);
         $validSignatureKey = hash("sha512", $notification->order_id . $notification->status_code . $notification->gross_amount . env('MIDTRANS_SERVERKEY'));
-        // \dd($validSignatureKey, $notification->signature_key);
+        // \dd($validSignatureKey);
         if ($notification->signature_key != $validSignatureKey) {
             return response(['message' => 'Invalid signature'], 403);
         }
+        // dd('valid');
         $this->initPaymentGateway();
         $notif = new Notification();
         $transaction = $notif->transaction_status;
