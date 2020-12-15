@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Payment;
 
 use App\Http\Controllers\Controller;
 use App\Model\Join;
+use App\Model\Payment2;
+use Exception;
 use Illuminate\Http\Request;
 use Midtrans\Snap;
 
@@ -11,29 +13,40 @@ class JoinController extends Controller
 {
     public function JoinTournament()
     {
-        $join = Join::find(1);
+        // \dd('ini siapa');
+        $join = Join::find(2);
         $this->initPaymentGateway();
-        $join_details = array(
-            'order_id' => $join->code_order_id,
-            'gross_amount' => $join->gross_amount,
-        );
-        $customer_details = array(
+        $customerDetails = [
             'first_name'    => $join->approved_by,
-            'email'         => $join->approved_by,
+            // 'email'         => $join->approved_by,
+            'email'         => 'test@mail.com',
             'phone'         => $join->phone,
-        );
-        $expiry = array(
-            'duration' => Join::EXPIRY,
-        );
-        $transaction_join = array(
-            'transaction_details' => $join_details,
-            'customer_details' => $customer_details,
-            'expired' => $expiry,
-        );
+        ];
+
+        $params = [
+            'enable_payments' => Payment2::PAYMENT_CHANNELS,
+            'transaction_details' => [
+                'order_id' => $join->code_order_id,
+                'gross_amount' => $join->gross_amount,
+            ],
+            'customer_details' => $customerDetails,
+            'expiry' => [
+                "unit" => "days",
+                'duration' => Join::EXPIRY,
+            ],
+        ];
+        // \dd($params);
         try {
-            $paymentUrl = Snap::createTransaction($transaction_join);
-        } catch (\Throwable $th) {
-            //throw $th;
+            $response_midtrans = Snap::createTransaction($params);
+            $join->_token = $response_midtrans->token;
+            $join->redirect_url = $response_midtrans->redirect_url;
+            $join->save();
+            return \redirect($response_midtrans->redirect_url);
+        } catch (Exception $e) {
+            echo $e->getMessage();
+
+            // $message = $e->getMessage();
+            // return \redirect()->back()->with($message);
         }
     }
 }

@@ -13,13 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    // return view('welcome');r
-    return redirect()->route('pay');
-});
+// Route::get('/', function () {
+//     // return view('welcome');r
+//     return redirect()->route('pay');
+// });
 // Route::get('/', 'PaymentController@index');
-Route::get('payment', 'PaymentController@pay')->name('pay');
-Route::get('payment/finish', 'PaymentController@finish');
+// Route::get('payment', 'PaymentController@pay')->name('pay');
+// Route::get('payment/finish', 'PaymentController@finish');
 // Route::get('payment', 'PaymentController@index');
 // Route::get('payment/finish', 'PaymentController');
 // Route::get('payment/unfinish', 'PaymentController');
@@ -35,6 +35,8 @@ Route::get('payment/finish', 'PaymentController@finish');
 // Route::get('error', 'Payment2Controller@unfinish');
 
 //contoh sesuai dengan studi case yang sedang dialami
-Route::group(['namespace' => 'Payment'], function () {
-    Route::get('/', 'JoinController@index');
+Route::namespace('Payment')->group(function () {
+    Route::get('/', 'JoinController@JoinTournament');
+    Route::post('notification', 'PaymentMidtransController@notification');
+    Route::get('finish', 'PaymentMidtransController@success');
 });

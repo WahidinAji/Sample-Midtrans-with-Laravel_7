@@ -12,6 +12,13 @@
   </head>
   <body>
     <h1>Finish payment</h1>
+    {{-- @forelse ($join as $item) --}}
+    <p>{{ $join->code_order_id }}</p>
+    <p>{{ $join->gross_amount }}</p>
+    <p>{{ $join->order_id }}</p>
+    {{-- @empty
+<p>kosoong</p>
+    @endforelse --}}
     <a href="#" class="btn btn-success">Pay now</a>
 
     <!-- Optional JavaScript; choose one of the two! -->

@@ -45,15 +45,6 @@ class CreatePaymentMidtransTable extends Migration
             //   ],
             $table->string('va_bank')->nullable();
             $table->string('va_number')->nullable();
-            //bni va
-            //   "payment_amounts": [
-            //     {
-            //       "paid_at": "2016-06-19 20:12:22",
-            //       "amount": "20000.00"
-            //     }
-            //   ],
-            $table->string('bni_pa_paid_at')->nullable(); //pa => payment_amounts
-            $table->string('bni_pa_amount')->nullable(); //pa => payment_amounts
             //mandiri bill
             //   "bill_key": "990000000260",
             //   "biller_code": "70012"

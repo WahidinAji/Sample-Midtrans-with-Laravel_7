@@ -8,10 +8,10 @@ class Payment2 extends Model
 {
     protected $guarded = ['id', 'created_at', 'updated_at'];
     public $timestamps = \true;
+
     public const PAYMENT_CHANNELS = [
         'echannel', 'permata_va',
-        'bca_va', 'bni_va', 'other_va', 'gopay', 'indomaret', 'alfamart',
-        'danamon_online', 'akulaku'
+        'bca_va', 'bni_va', 'other_va', 'gopay', 'indomaret', 'alfamart','danamon_online', 'akulaku'
     ];
     // public const PAYMENT_CHANNELS = [
     //     'credit_card', 'mandiri_clickpay', 'cimb_clicks',

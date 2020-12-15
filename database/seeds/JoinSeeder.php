@@ -23,6 +23,7 @@ class JoinSeeder extends Seeder
             'approved_at' => now(),
             'code_order_id' => "$code1",
             'gross_amount' => 10000,
+            'payment_duration' => Join::EXPIRY,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -36,6 +37,7 @@ class JoinSeeder extends Seeder
             'approved_at' => now(),
             'code_order_id' => "$code2",
             'gross_amount' => 10000,
+            'payment_duration' => Join::EXPIRY,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -49,6 +51,7 @@ class JoinSeeder extends Seeder
             'approved_at' => now(),
             'code_order_id' => "$code3",
             'gross_amount' => 10000,
+            'payment_duration' => Join::EXPIRY,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -62,6 +65,7 @@ class JoinSeeder extends Seeder
             'approved_at' => now(),
             'code_order_id' => "$code4",
             'gross_amount' => 10000,
+            'payment_duration' => Join::EXPIRY,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
